@@ -50,6 +50,9 @@ b.myBind(a, 1)(2) // 3
 b.myBind(a)(1, 2) // 3
 
 const myNew = function(context, ...args) {
+    if (typeof context !== 'function') {
+        return
+    }
     const obj = {}
     obj.__proto__ = context.prototype
     const result = context.apply(obj, args) // or call(obj, ...args)
@@ -76,3 +79,18 @@ console.log(p1 instanceof Person) // true
 const p2 = myNew(Person, 'p2')
 // console.log(p2 instanceof Person) // Class constructor Person cannot be invoked without 'new'
 console.log(p2 instanceof Person) // true
+
+function instanceOf(left, right) {
+    let proto = left.__proto__
+    let prototype = right.prototype
+    while (true) {
+        if (proto === null) return false
+        if (proto === prototype) return true
+        proto = proto.__proto__
+    }
+}
+
+//   作者：妹红
+//   链接：https://juejin.im/post/5e7854ff518825495d69d4a9
+//   来源：掘金
+//   著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
