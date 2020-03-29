@@ -80,17 +80,16 @@ const p2 = myNew(Person, 'p2')
 // console.log(p2 instanceof Person) // Class constructor Person cannot be invoked without 'new'
 console.log(p2 instanceof Person) // true
 
-function instanceOf(left, right) {
-    let proto = left.__proto__
-    let prototype = right.prototype
+function myInstanceof(left, right) {
+    //基本数据类型直接返回false
+    if (typeof left !== 'object' || left === null) return false
+    //getProtypeOf是Object对象自带的一个方法，能够拿到参数的原型对象
+    let proto = Object.getPrototypeOf(left)
     while (true) {
-        if (proto === null) return false
-        if (proto === prototype) return true
-        proto = proto.__proto__
+        //查找到尽头，还没找到
+        if (proto == null) return false
+        //找到相同的原型对象
+        if (proto == right.prototype) return true
+        proto = Object.getPrototypeof(proto)
     }
 }
-
-//   作者：妹红
-//   链接：https://juejin.im/post/5e7854ff518825495d69d4a9
-//   来源：掘金
-//   著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
