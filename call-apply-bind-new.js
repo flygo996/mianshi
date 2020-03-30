@@ -62,6 +62,26 @@ const myNew = function(context, ...args) {
         : obj
 }
 
+const New = function(fn, ...arg) {
+    if (typeof context !== 'function') {
+        return
+    }
+    const obj = {}
+    obj.__proto__ = fn.prototype
+    const rst = fn.apply(obj, arg)
+    return rst instanceof Object ? rst : obj
+}
+
+// 极简写法
+function _new(fn, ...arg) {
+    if (typeof context !== 'function') {
+        return
+    }
+    const obj = Object.create(fn.prototype)
+    const rst = fn.apply(obj, arg)
+    return rst instanceof Object ? rst : obj
+}
+
 // class Person {
 //     constructor(name) {
 //         this.name = name
