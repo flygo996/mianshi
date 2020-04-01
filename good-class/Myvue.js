@@ -58,9 +58,7 @@ const Vue = function(options) {
     }
     // 渲染函数
     this.render = function() {
-        with (self) {
-            _data.text
-        }
+        self._data.text
     }
     // 监听this._data
     observe(this._data)
@@ -73,6 +71,7 @@ const Watcher = function(vm, fn) {
     Dep.target = this
     // 向Dep方法添加当前Wathcer
     this.addDep = function(dep) {
+        // console.log(self === this) // true
         dep.addSub(self)
     }
     // 更新方法，用于触发vm._render
@@ -104,6 +103,7 @@ const Dep = function() {
     }
     // 为当前收集器添加Watcher
     this.addSub = function(watcher) {
+        // console.log(self === this) // true
         self.subs.push(watcher)
     }
     // 通知收集器中所的所有Wathcer，调用其update方法
@@ -118,9 +118,11 @@ const vue = new Vue({
     data() {
         return {
             text: 'hello world',
+            text2: '222',
         }
     },
 })
 
 vue.mount() // in get
 vue._data.text = '123' // in watcher update /n in get
+vue._data.text2 = '1' // nothing
